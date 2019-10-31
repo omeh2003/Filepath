@@ -1,6 +1,10 @@
 import os
 import sys
 import MagicPath
+import apkdecompiler
+import apkutils2
+import apkverify
+
 
 class Prog:
 
@@ -12,9 +16,13 @@ class Prog:
         tmpdir1.ensure()
         tmpdir2.ensure()
         tmpdir1.addpath("2")
-        MagicPath.copytreepath(tmpdir1,tmpdir2)
-        res= tmpdir2.find_files_item("javacToTranslate_v1.1.7z")
-        print(res)
+        file = defpath.addpath("apk.apk")
+        apk= apkutils2.APK(file.path())
+        res = apk.dex_files
+
+        exit()
+
+
 
 
 
