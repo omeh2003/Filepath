@@ -1,4 +1,4 @@
-from setuptools import setup , config,find_packages
+from setuptools import setup, config, find_packages
 
 setup(
     name='Filepath',
@@ -8,10 +8,10 @@ setup(
     package_dir={'': 'MagicPath'},
     url='https://github.com/omeh2003/Filepath',
     license='',
-    author='omeh2',
+    author='omeh2003',
     author_email='omeh2003@gmail.com',
-    description='Объектная работа с файловой системой'
-    # entry_points={
+    description="Объектная работа с файловой системой"
+    #   entry_points={
     #     'console_scripts': [
     #         'magicf = cmd.cmd:entry_point'
     #     ]

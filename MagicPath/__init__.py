@@ -135,12 +135,10 @@ class FilePath(object):
         Найти файл
         """
         _file = file
-        _list=list(FilePath.find_files(self))
+        _list = list(FilePath.find_files(self))
         if any(_file in s.basename() for s in _list.__iter__()):
             return True
         return False
-
-
 
     def is_dir(self):
         return self.exist() and os.path.isdir(self.mpath)
@@ -231,7 +229,7 @@ def copytreepath(src, dst, symlinks=False, ignore=None):
     for item in src.ls():
         s = src.addpath(item.basename())
         d = dst.addpath(item.basename())
-        if s.is_dir() and not d.exist() :
+        if s.is_dir() and not d.exist():
             shutil.copytree(s.path(), d.path(), ignore=None)
         else:
             if not d.exist():
