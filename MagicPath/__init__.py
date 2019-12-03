@@ -8,7 +8,8 @@ from enum import Enum
 
 class SortOrder(Enum):
     """
-    Different sorting orders for the LS function
+    сортировка  для функции LS
+
     """
     RANDOM = 1
     ORDER = 2
@@ -18,7 +19,7 @@ class SortOrder(Enum):
 
 class FilePath(object):
     """
-    Wrapper for files and directories
+            Обертка для файлов и каталогов
     """
 
     def __init__(self, mpath):
@@ -27,7 +28,7 @@ class FilePath(object):
 
     def __add__(self, other):
         """
-        Concatenates two file pathes
+             Объединяет два пути
         """
         if isinstance(other, str):
             other = FilePath(other)
@@ -35,7 +36,8 @@ class FilePath(object):
 
     def ls(self, filetype="", order=SortOrder.ALPHA, hourly=False):
         """
-        Lists the directory a FilePath represents
+        Содержимое каталога
+
         :param filetype: ext
         :param order: how to sort the output
         :param hourly: whether should pick one file per hour (used for debug)
@@ -45,16 +47,16 @@ class FilePath(object):
         mlist = os.listdir(self.mpath)
 
         if order == SortOrder.RANDOM:
-            # random sorting (used for picking random directories)
+            # случайная сортировка (используется для выбора случайных каталогов)
             rnd.shuffle(mlist)
         elif order == SortOrder.ORDER:
-            # order by first number in file name (for debug)
+            # порядок по первому номеру в имени файла (для отладки)
             mlist.sort(key=lambda e: int(re.match(r"^(\d+)_.*", os.path.basename(e)).group(1)))
         elif order == SortOrder.DATE:
             # order by the timestamp in file name (for debug)
             mlist.sort(key=lambda e: int(re.match(r"^.*_(\d+)\.json", os.path.basename(e)).group(1)))
         elif order == SortOrder.ALPHA:
-            # order alphabetically
+            # по алфавиту
             mlist.sort()
 
         if hourly:
@@ -83,47 +85,45 @@ class FilePath(object):
 
     def ensure(self):
         """
-        Ensure the directory described by this FilePath exists
-        i.e. create if doesn't exist
+            Проверка, что каталог, описанный в этом пути существует
         """
         if not os.path.exists(self.mpath):
             os.makedirs(self.mpath)
 
     def open(self, mode='r'):
         """
-        Open the file described by this FilePath
-        :return: FilePathWithHelper to be used with "with" statement
+        Открыть файл
+        :return: FilePathWithHelper для использования "with"
         """
         return FilePathWithHelper(self, mode)
 
     def rmtree(self):
         """
-        Remove the directory that this FilePath represents
+        Удалить каталог рекурсивно
         """
         shutil.rmtree(self.mpath)
 
     def rm(self):
         """
-        Remove the directory that this FilePath represents
+        Удалить
         """
         os.remove(self.mpath)
 
     def basename(self):
         """
-        File/directory name of this FilePath
+        Имя каталога или файла
         """
         return os.path.basename(self.mpath)
 
     def path(self):
         """
-        Print full path
+        Полный путь
         """
         return self.mpath
 
     def find_files(self):
         """
-        Do an equivalent of find in bash, listing all files in a
-        directory tree
+        поиск всех файлов
         """
         for dir, subdirs, files in os.walk(self.mpath):
             dfp = fp(dir)
@@ -132,16 +132,13 @@ class FilePath(object):
 
     def find_files_item(self, file):
         """
-        Do an equivalent of find in bash, listing all files in a
-        directory tree
+        Найти файл
         """
         _file = file
-        _list=list(FilePath.find_files(self))
+        _list = list(FilePath.find_files(self))
         if any(_file in s.basename() for s in _list.__iter__()):
             return True
         return False
-
-
 
     def is_dir(self):
         return self.exist() and os.path.isdir(self.mpath)
@@ -232,7 +229,7 @@ def copytreepath(src, dst, symlinks=False, ignore=None):
     for item in src.ls():
         s = src.addpath(item.basename())
         d = dst.addpath(item.basename())
-        if s.is_dir() and not d.exist() :
+        if s.is_dir() and not d.exist():
             shutil.copytree(s.path(), d.path(), ignore=None)
         else:
             if not d.exist():
